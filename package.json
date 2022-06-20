@@ -1,0 +1,36 @@
+{
+  "name": "storybook-addon-docusaurus",
+  "version": "0.1.0",
+  "description": "Use Storybook with Docusaurus",
+  "main": "dist/preset.js",
+  "files": [
+    "dist/*"
+  ],
+  "keywords": [
+    "storybook-addons",
+    "docusaurus"
+  ],
+  "storybook": {
+    "displayName": "Storybook Addon for Docusaurus",
+    "icon": "https://raw.githubusercontent.com/facebook/docusaurus/main/website/static/img/docusaurus.png"
+  },
+  "author": "Jody Heavener <j.heavener@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jodyheavener/storybook-addon-docusaurus"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn compile --minify && cp dist/preset.js preset.js",
+    "compile": "esbuild src/preset.ts --bundle --platform=node --outfile=dist/preset.js",
+    "watch": "yarn compile --watch"
+  },
+  "dependencies": {
+    "enhanced-resolve": "^5.9.3"
+  },
+  "devDependencies": {
+    "@storybook/core-common": "^6.5.9",
+    "esbuild": "^0.14.46",
+    "webpack": "^5.73.0"
+  }
+}
