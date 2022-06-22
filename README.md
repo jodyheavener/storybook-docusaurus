@@ -1,21 +1,15 @@
 # storybook-addon-docusaurus
 
-A Storybook addon that allows you to work with Docusaurus components (kind of)
+🦖 A Storybook addon to aid in developing with [Docusaurus](https://docusaurus.io/).
 
-The purpose of this addon is to provide Storybook with the information it needs to resolve the many module aliases Docusaurus uses, such as `@docusaurus`, `@generated`, `@site`, `@theme`, and much more, as well as autmatically import the default theme styles.
+This addon does the following:
 
-⚠️ **This is a work in progress**, and there are some notable caveats/gaps:
+- Sets up the many module aliases Docusaurus uses, such as `@theme`, `@docusaurus`, `@generated`, `@site`, etc., so you can work with components in Storybook that reference these modules. `@theme` and its [sibling aliases](https://docusaurus.io/docs/next/advanced/client#theme-aliases) correctly account for components contributed via plugins, as well as Swizzled components.
+- Imports all the client modules contributed via plugins, so they are loaded into the Storybook preview window. For example, if you're using the [classic theme](https://docusaurus.io/docs/api/themes/@docusaurus/theme-classic) it'll automatically load the Infima global styles and the `customCss` file you've set up.
+- Sets up loaders for [CSS modules](https://docusaurus.io/docs/styling-layout#css-modules) and SVGs.
 
-- Currently hard-coded to work with the [classic theme](https://docusaurus.io/docs/next/api/themes/@docusaurus/theme-classic).
-- Mostly handles `@theme`, `@theme-original`, and `@theme-init`, but does not currently incorporate components introduced via plugins.
-- Does currently not import theme `customCSS`.
-
-If you have time and would like to improve this addon please go ahead and open a PR!
+⚠️ This is a work in progress! If you have time and would like to improve this addon please go ahead and open a PR.
 
 ## License
 
 MIT
-
-## Acknowledgement
-
-This addon was originally conceptualized from the [Storybook config](https://github.com/Unleash/unleash/blob/main/website/.storybook/main.js) found in the [Unleash/unleash repo](https://github.com/Unleash/unleash) ([LICENCE](https://github.com/Unleash/unleash/blob/main/LICENSE)).
