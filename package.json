@@ -1,36 +1,44 @@
 {
   "name": "storybook-addon-docusaurus",
   "version": "0.1.0",
-  "description": "Use Storybook with Docusaurus",
-  "main": "dist/preset.js",
-  "files": [
-    "dist/*"
-  ],
+  "description": "Storybook addon to aid in developing with Docusaurus",
   "keywords": [
     "storybook-addons",
     "docusaurus"
   ],
-  "storybook": {
-    "displayName": "Storybook Addon for Docusaurus",
-    "icon": "https://raw.githubusercontent.com/facebook/docusaurus/main/website/static/img/docusaurus.png"
-  },
-  "author": "Jody Heavener <j.heavener@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/jodyheavener/storybook-addon-docusaurus"
   },
   "license": "MIT",
+  "author": "Jody Heavener <j.heavener@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist",
+    "preset.js"
+  ],
   "scripts": {
-    "build": "yarn compile --minify && cp dist/preset.js preset.js",
-    "compile": "esbuild src/preset.ts --bundle --platform=node --outfile=dist/preset.js",
-    "watch": "yarn compile --watch"
+    "build": "siroc build && cp dist/index.cjs preset.js",
+    "watch": "siroc build --watch"
   },
   "dependencies": {
-    "enhanced-resolve": "^5.9.3"
+    "@docusaurus/core": "^2.0.0-beta.21"
   },
   "devDependencies": {
-    "@storybook/core-common": "^6.5.9",
-    "esbuild": "^0.14.46",
+    "@docusaurus/types": "^2.0.0-beta.21",
+    "siroc": "^0.16.0",
     "webpack": "^5.73.0"
+  },
+  "storybook": {
+    "displayName": "Docusaurus",
+    "icon": "https://raw.githubusercontent.com/facebook/docusaurus/main/website/static/img/docusaurus.png"
   }
 }

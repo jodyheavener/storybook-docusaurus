@@ -1,16 +1,19 @@
 # storybook-addon-docusaurus
 
-A Storybook addon that allows you to work with Docusaurus components (kind of)
+🦖 A Storybook addon to aid in developing with [Docusaurus](https://docusaurus.io/).
 
-The purpose of this addon is to provide Storybook with the information it needs to resolve the many module aliases Docusaurus uses, such as `@docusaurus`, `@generated`, `@site`, `@theme`, and much more, as well as autmatically import the default theme styles.
+This addon does the following:
 
-⚠️ **This is a work in progress**, and there are some notable caveats/gaps:
+- Applies the core Docusaurus Webpack config.
+  - Module aliases such as `@theme`, `@docusaurus`, `@generated`, `@site`, etc. are recognized. This also means `@theme` (and [sibling aliases](https://docusaurus.io/docs/advanced/client#theme-aliases)) respect loading order between core theme, plugin-provided, and Swizzled components.
+  - Correctly loads SVG, fonts, and CSS modules the Docusaurus way.
+  - Prefers [docusaurus-plugin-sass](https://github.com/rlamana/docusaurus-plugin-sass) over other SASS loaders.
+  - Sets up resolution of assets in [`staticDirectories`](https://docusaurus.io/docs/api/docusaurus-config#staticDirectories).
+  - Passes the Webpack config through all plugins that have a [`configureWebpack`](https://docusaurus.io/docs/api/plugin-methods/lifecycle-apis#configureWebpack) method so they can apply their own tweaks.
+- Imports all the client modules contributed via plugins that have a [`getClientModules`](https://docusaurus.io/docs/api/plugin-methods/lifecycle-apis#getClientModules) method, so they are loaded into the Storybook preview window.
+  - For example, if you're using the [classic theme](https://docusaurus.io/docs/api/themes/@docusaurus/theme-classic) it'll automatically load the Infima global styles and the `customCss` file you've set up.
 
-- Currently hard-coded to work with the [classic theme](https://docusaurus.io/docs/next/api/themes/@docusaurus/theme-classic).
-- Mostly handles `@theme`, `@theme-original`, and `@theme-init`, but does not currently incorporate components introduced via plugins.
-- Does currently not import theme `customCSS`.
-
-If you have time and would like to improve this addon please go ahead and open a PR!
+⚠️ This is a work in progress! If you have time and would like to improve this addon please go ahead and open a PR.
 
 ## Usage
 
@@ -24,7 +27,3 @@ Here's how to use this addon:
 ## License
 
 MIT
-
-## Acknowledgement
-
-This addon was originally conceptualized from the [Storybook config](https://github.com/Unleash/unleash/blob/main/website/.storybook/main.js) found in the [Unleash/unleash repo](https://github.com/Unleash/unleash) ([LICENCE](https://github.com/Unleash/unleash/blob/main/LICENSE)).
