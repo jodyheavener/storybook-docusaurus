@@ -4,6 +4,9 @@ import createClientConfig from "@docusaurus/core/lib/webpack/client";
 import { applyConfigureWebpack } from "@docusaurus/core/lib/webpack/utils";
 import { loadClientModules } from "@docusaurus/core/lib/server/clientModules";
 import type { LoadedPlugin } from "@docusaurus/types";
+import { logger } from "@storybook/node-logger";
+
+logger.info("Configuring Storybook for Docusaurus...");
 
 const ruleMatches = (rule: RuleSetRule, ...inputs: string[]) =>
   inputs.some((input) => (rule.test as RegExp).test(input));
@@ -16,8 +19,11 @@ const loadDocusaurus = async () =>
 export const config = async (entry: string[] = []) => {
   const { plugins } = await loadDocusaurus();
 
-  // Load all the modules provided by plugins (like CSS files)
   const clientModules = loadClientModules(plugins);
+  logger.info(
+    `Adding ${clientModules.length} Docusaurus client modules to preview frame`
+  );
+
   return [...entry, ...clientModules];
 };
 
@@ -40,24 +46,24 @@ export const webpackFinal = async (
 
   const rules = (config.module!.rules as RuleSetRule[])
     .map((rule) => {
-      // Let Docusaurus handle SVGs
       if (ruleMatches(rule, ".svg")) {
+        logger.info("Disabling SVG loader in favor of Docusaurus core loader");
         return {
           ...rule,
           exclude: /\.svg$/,
         };
       }
 
-      // Let Docusaurus handle MDX files
       if (ruleMatches(rule, ".mdx")) {
+        logger.info("Disabling MDX loader in favor of Docusaurus core loader");
         return null;
       }
 
-      // Let docusaurus-plugin-sass handle SCSS modules
       if (
         hasPlugin("docusaurus-plugin-sass") &&
         ruleMatches(rule, ".module.scss")
       ) {
+        logger.info("Disabling SASS loader in favor of docusaurus-plugin-sass");
         return null;
       }
 
@@ -93,6 +99,9 @@ export const webpackFinal = async (
   (props.plugins as LoadedPlugin[])
     .filter((plugin) => "configureWebpack" in plugin)
     .forEach((plugin) => {
+      logger.info(
+        `Applying Webpack config from Docusaurus "${plugin.name}" plugin`
+      );
       finalConfig = applyConfigureWebpack(
         plugin.configureWebpack!.bind(plugin),
         finalConfig,

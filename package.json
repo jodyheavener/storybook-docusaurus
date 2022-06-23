@@ -30,7 +30,8 @@
     "watch": "siroc build --watch"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-beta.21"
+    "@docusaurus/core": "^2.0.0-beta.21",
+    "@storybook/node-logger": "^6.5.9"
   },
   "devDependencies": {
     "@docusaurus/types": "^2.0.0-beta.21",
