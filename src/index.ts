@@ -48,6 +48,11 @@ export const webpackFinal = async (
         };
       }
 
+      // Let Docusaurus handle MDX files
+      if (ruleMatches(rule, ".mdx")) {
+        return null;
+      }
+
       // Let docusaurus-plugin-sass handle SCSS modules
       if (
         hasPlugin("docusaurus-plugin-sass") &&
