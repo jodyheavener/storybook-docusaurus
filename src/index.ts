@@ -97,5 +97,17 @@ export const webpackFinal = async (
       );
     });
 
+  // For some reason I've run into `exclude` properties
+  // with undefined values, so let's filter those out
+  finalConfig.module!.rules = (finalConfig.module!.rules as RuleSetRule[]).map(
+    (rule) => {
+      if (rule.exclude && Array.isArray(rule.exclude)) {
+        rule.exclude = rule.exclude.filter(Boolean);
+      }
+
+      return rule;
+    }
+  );
+
   return finalConfig;
 };
