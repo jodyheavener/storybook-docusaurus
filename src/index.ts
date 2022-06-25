@@ -3,18 +3,25 @@ import { load } from "@docusaurus/core/lib/server";
 import createClientConfig from "@docusaurus/core/lib/webpack/client";
 import { applyConfigureWebpack } from "@docusaurus/core/lib/webpack/utils";
 import { loadClientModules } from "@docusaurus/core/lib/server/clientModules";
-import type { LoadedPlugin } from "@docusaurus/types";
+import type { LoadedPlugin, Props } from "@docusaurus/types";
 import { logger } from "@storybook/node-logger";
 
 logger.info("Configuring Storybook for Docusaurus...");
 
+let docusaurusData: Props;
+
 const ruleMatches = (rule: RuleSetRule, ...inputs: string[]) =>
   inputs.some((input) => (rule.test as RegExp).test(input));
 
-const loadDocusaurus = async () =>
-  await load({
-    siteDir: process.cwd(),
-  });
+const loadDocusaurus = async () => {
+  docusaurusData =
+    docusaurusData ||
+    (await load({
+      siteDir: process.cwd(),
+    }));
+
+  return docusaurusData;
+};
 
 export const config = async (entry: string[] = []) => {
   const { plugins } = await loadDocusaurus();
