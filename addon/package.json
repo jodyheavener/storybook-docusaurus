@@ -1,0 +1,48 @@
+{
+  "name": "storybook-addon-docusaurus",
+  "version": "0.2.1",
+  "description": "Storybook addon to aid in developing with Docusaurus",
+  "keywords": [
+    "storybook-addons",
+    "docusaurus"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jodyheavener/storybook-addon-docusaurus"
+  },
+  "license": "MIT",
+  "author": "Jody Heavener <j.heavener@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist",
+    "preset.js"
+  ],
+  "scripts": {
+    "build": "siroc build && cp dist/index.cjs preset.js",
+    "watch": "siroc build --watch"
+  },
+  "dependencies": {
+    "@storybook/node-logger": "^6.5.16"
+  },
+  "devDependencies": {
+    "@docusaurus/core": "^2.3.1",
+    "@docusaurus/types": "^2.3.1",
+    "siroc": "^0.16.0",
+    "webpack": "^5.73.0"
+  },
+  "peerDependencies": {
+    "@docusaurus/core": "^2.3.1"
+  },
+  "storybook": {
+    "displayName": "Docusaurus",
+    "icon": "https://raw.githubusercontent.com/facebook/docusaurus/main/website/static/img/docusaurus.png"
+  }
+}

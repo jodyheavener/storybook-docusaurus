@@ -13,8 +13,11 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: yarn publish --non-interactive
+      - name: Setup and publish package
+        working-directory: ./addon
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+          yarn publish --non-interactive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
