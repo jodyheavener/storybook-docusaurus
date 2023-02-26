@@ -37,7 +37,8 @@
   ],
   "scripts": {
     "build": "node -r esbuild-register bundle.ts --build",
-    "watch": "node -r esbuild-register bundle.ts --watch"
+    "watch": "node -r esbuild-register bundle.ts --watch",
+    "prepack": "cp ../LICENSE LICENSE"
   },
   "dependencies": {
     "@storybook/manager-api": "^7.0.0-alpha.54",
