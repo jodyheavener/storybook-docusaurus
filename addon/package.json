@@ -26,8 +26,10 @@
     "preset.js"
   ],
   "scripts": {
-    "build": "siroc build && cp dist/index.cjs preset.js",
-    "watch": "siroc build --watch"
+    "clean": "rimraf dist preset.js",
+    "compile": "esbuild src/index.ts",
+    "build": "yarn clean && yarn compile --minify --format=cjs --outfile=dist/index.cjs && yarn compile --minify --format=esm --outfile=dist/index.mjs && cp dist/index.cjs preset.js",
+    "watch": "yarn clean && yarn compile --watch --format=cjs --outfile=dist/index.cjs "
   },
   "dependencies": {
     "@storybook/node-logger": "^6.5.16"
@@ -35,7 +37,8 @@
   "devDependencies": {
     "@docusaurus/core": "^2.3.1",
     "@docusaurus/types": "^2.3.1",
-    "siroc": "^0.16.0",
+    "esbuild": "^0.17.10",
+    "rimraf": "^4.1.2",
     "webpack": "^5.73.0"
   },
   "peerDependencies": {
