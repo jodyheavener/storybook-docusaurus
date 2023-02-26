@@ -50,23 +50,20 @@ const webpackFinal = async (config: Configuration): Promise<Configuration> => {
   const rules = (config.module!.rules as RuleSetRule[])
     .map((rule) => {
       if (ruleMatches(rule, ".svg")) {
-        logger.info("Disabling SVG loader in favor of Docusaurus core loader");
+        logger.info("Preferring Docusaurus SVG loader over Storybook");
         return {
           ...rule,
           exclude: /\.svg$/,
         };
       }
 
-      if (ruleMatches(rule, ".mdx")) {
-        logger.info("Disabling MDX loader in favor of Docusaurus core loader");
-        return null;
-      }
-
       if (
         hasPlugin("docusaurus-plugin-sass") &&
         ruleMatches(rule, ".module.scss")
       ) {
-        logger.info("Disabling SASS loader in favor of docusaurus-plugin-sass");
+        logger.info(
+          "Preferring docusaurus-plugin-sass over Storybook SASS loader"
+        );
         return null;
       }
 
