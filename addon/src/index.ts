@@ -103,12 +103,10 @@ export const webpackFinal = async (
   };
 
   // Allow plugins to make any final tweaks to the config
+  const appliedWebpackConfigs: string[] = [];
   (props.plugins as LoadedPlugin[])
     .filter((plugin) => "configureWebpack" in plugin)
     .forEach((plugin) => {
-      logger.info(
-        `Applying Webpack config from Docusaurus "${plugin.name}" plugin`
-      );
       finalConfig = applyConfigureWebpack(
         plugin.configureWebpack!.bind(plugin),
         finalConfig,
@@ -116,7 +114,16 @@ export const webpackFinal = async (
         props.siteConfig.webpack?.jsLoader,
         plugin.content
       );
+      appliedWebpackConfigs.push(plugin.name);
     });
+
+  if (appliedWebpackConfigs.length > 0) {
+    logger.info(
+      `Applying Webpack configs from the following Docusaurus plugins: ${appliedWebpackConfigs.join(
+        ", "
+      )}`
+    );
+  }
 
   // For some reason I've run into `exclude` properties
   // with undefined values, so let's filter those out
