@@ -2,27 +2,37 @@
 
 🦖 A Storybook addon to aid in developing with [Docusaurus](https://docusaurus.io/).
 
-This addon does the following:
+## Features
 
-- Applies the core Docusaurus Webpack config.
-  - Module aliases such as `@theme`, `@docusaurus`, `@generated`, `@site`, etc. are recognized. This also means `@theme` (and [sibling aliases](https://docusaurus.io/docs/advanced/client#theme-aliases)) respect loading order between core theme, plugin-provided, and Swizzled components.
-  - Correctly loads SVG, fonts, MDX, and CSS modules the Docusaurus way.
-  - Prefers [docusaurus-plugin-sass](https://github.com/rlamana/docusaurus-plugin-sass) over other SASS loaders.
-  - Sets up resolution of assets in [`staticDirectories`](https://docusaurus.io/docs/api/docusaurus-config#staticDirectories).
-  - Passes the Webpack config through all plugins that have a [`configureWebpack`](https://docusaurus.io/docs/api/plugin-methods/lifecycle-apis#configureWebpack) method so they can apply their own tweaks.
-- Imports all the client modules contributed via plugins that have a [`getClientModules`](https://docusaurus.io/docs/api/plugin-methods/lifecycle-apis#getClientModules) method, so they are loaded into the Storybook preview window.
-  - For example, if you're using the [classic theme](https://docusaurus.io/docs/api/themes/@docusaurus/theme-classic) it'll automatically load the Infima global styles and the `customCss` file you've set up.
+- Adds support for Docusaurus module aliases such as `@theme`, `@docusaurus`, `@generated`, and `@site`. [Theme alias](https://docusaurus.io/docs/advanced/client#theme-aliases) loading order is also respected across core theme, plugin-provided, and swizzled components.
+- Enables core Docusaurus loaders for JS, SVG, and fonts and other assets. Will prefer [docusaurus-plugin-sass](https://github.com/rlamana/docusaurus-plugin-sass) over Storybook's SASS loader.
+- Resolves assets in [`staticDirectories`](https://docusaurus.io/docs/api/docusaurus-config#staticDirectories).
+- Loads the [client modules](https://docusaurus.io/docs/api/plugin-methods/lifecycle-apis#getClientModules) and [Webpack configs](https://docusaurus.io/docs/api/plugin-methods/lifecycle-apis#configureWebpack) from all plugins.
+- Applies a global decorator that wraps all components in Docusaurus React contexts, allowing the rendering of all swizzled components.
 
-⚠️ This is a work in progress! If you have time and would like to improve this addon please go ahead and open a PR.
+## Installing and Usage
 
-## Usage
+This addon assumes you're working in a project that already has Docusaurus and Storybook set up.
 
-Here's how to use this addon:
+### Install the addon
 
-- Storybook needs to be [set up](https://storybook.js.org/docs/react/get-started/install) in your project.
-- Install the dependency with `yarn add --dev storybook-addon-docusaurus` or `npm i --save-dev storybook-addon-docusaurus`
-- Add `storybook-addon-docusaurus` it to the list of `addons` in `./storybook/main.js`. [Learn more.](https://storybook.js.org/docs/react/addons/install-addons/)
-- You should now be able to import components that uses Docusaurus aliases.
+With npm:
+
+```sh
+npm i storybook-addon-docusaurus
+```
+
+Or with yarn:
+
+```sh
+yarn add storybook-addon-docusaurus
+```
+
+## Enable the addon
+
+Add `"storybook-addon-docusaurus"` to the list of `addons` in your Storybook `.storybook/main.js` file. [Learn more.](https://storybook.js.org/docs/react/addons/install-addons/)
+
+That's it! You should now be able to write stories that make use of Docusaurus components.
 
 ## License
 
