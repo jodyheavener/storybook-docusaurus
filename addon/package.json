@@ -41,7 +41,6 @@
     "prepack": "cp ../LICENSE LICENSE"
   },
   "dependencies": {
-    "@storybook/manager-api": "^7.0.0-alpha.54",
     "@storybook/node-logger": "^6.5.16"
   },
   "devDependencies": {
