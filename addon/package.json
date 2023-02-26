@@ -14,35 +14,50 @@
   "author": "Jody Heavener <j.heavener@gmail.com>",
   "exports": {
     ".": {
+      "node": "./dist/index.cjs",
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
     },
+    "./preset": {
+      "require": "./dist/preset.cjs",
+      "import": "./dist/preset.mjs"
+    },
+    "./preview": {
+      "require": "./dist/preview.cjs",
+      "import": "./dist/preview.mjs"
+    },
     "./package.json": "./package.json"
   },
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "module": "dist/index.mjs",
   "files": [
-    "dist",
-    "preset.js"
+    "dist/**/*",
+    "*.js",
+    "*.d.ts"
   ],
   "scripts": {
-    "clean": "rimraf dist preset.js",
-    "compile": "esbuild src/index.ts",
-    "build": "yarn clean && yarn compile --minify --format=cjs --outfile=dist/index.cjs && yarn compile --minify --format=esm --outfile=dist/index.mjs && cp dist/index.cjs preset.js",
-    "watch": "yarn clean && yarn compile --watch --format=cjs --outfile=dist/index.cjs "
+    "build": "node -r esbuild-register bundle.ts --build",
+    "watch": "node -r esbuild-register bundle.ts --watch"
   },
   "dependencies": {
+    "@storybook/manager-api": "^7.0.0-alpha.54",
     "@storybook/node-logger": "^6.5.16"
   },
   "devDependencies": {
     "@docusaurus/core": "^2.3.1",
     "@docusaurus/types": "^2.3.1",
+    "@storybook/react": "^6.5.16",
     "esbuild": "^0.17.10",
+    "esbuild-register": "^3.4.2",
+    "react-helmet-async": "^1.3.0",
+    "react-router-dom": "^5.3.3",
     "rimraf": "^4.1.2",
     "webpack": "^5.73.0"
   },
   "peerDependencies": {
-    "@docusaurus/core": "^2.3.1"
+    "@docusaurus/core": "^2.3.1",
+    "react-helmet-async": "^1.3.0",
+    "react-router-dom": "^5.3.3"
   },
   "storybook": {
     "displayName": "Docusaurus",
