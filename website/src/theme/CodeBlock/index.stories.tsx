@@ -1,21 +1,16 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import CodeBlock from ".";
 
 export default {
   title: "CodeBlock",
   component: CodeBlock,
-  parameters: {
-    layout: "fullscreen",
-  },
-} as ComponentMeta<typeof CodeBlock>;
+} as Meta<typeof CodeBlock>;
 
-const Template: ComponentStory<typeof CodeBlock> = (args) => (
-  <CodeBlock {...args} />
-);
+// type Story = StoryObj<typeof CodeBlock>;
 
-export const Default = Template.bind({});
-Default.args = {
-  children: 'console.log("Hello World!")',
-};
+// export const Default: Story = {
+//   args: {
+//     children: 'console.log("Hello World!")',
+//   },
+// };

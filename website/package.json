@@ -12,8 +12,8 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@docusaurus/core": "2.3.1",
@@ -28,15 +28,15 @@
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "@docusaurus/module-type-aliases": "2.3.1",
-    "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-essentials": "^6.5.16",
-    "@storybook/addon-interactions": "^6.5.16",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/builder-webpack5": "^6.5.16",
-    "@storybook/manager-webpack5": "^6.5.16",
-    "@storybook/react": "^6.5.16",
-    "@storybook/testing-library": "^0.0.13",
-    "babel-loader": "^8.3.0"
+    "@storybook/addon-actions": "^7.0.0-beta.54",
+    "@storybook/addon-essentials": "^7.0.0-beta.54",
+    "@storybook/addon-interactions": "^7.0.0-beta.54",
+    "@storybook/addon-links": "^7.0.0-beta.54",
+    "@storybook/react-webpack5": "^7.0.0-beta.54",
+    "@storybook/react": "^7.0.0-beta.54",
+    "@storybook/testing-library": "^0.0.14-next.1",
+    "babel-loader": "^8.3.0",
+    "storybook": "next"
   },
   "browserslist": {
     "production": [

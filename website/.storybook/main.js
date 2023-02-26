@@ -8,8 +8,13 @@ module.exports = {
     "@storybook/addon-interactions",
     "storybook-addon-docusaurus"
   ],
-  "framework": "@storybook/react",
-  "core": {
-    "builder": "@storybook/builder-webpack5"
+  "framework": {
+    "name": "@storybook/react-webpack5",
+    "options": {
+      "fastRefresh": true
+    },
+  },
+  "docs": {
+    "autodocs": false
   }
 }
