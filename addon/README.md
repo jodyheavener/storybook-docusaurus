@@ -28,7 +28,7 @@ Or with yarn:
 yarn add storybook-addon-docusaurus
 ```
 
-## Enable the addon
+### Enable the addon
 
 Add `"storybook-addon-docusaurus"` to the list of `addons` in your Storybook `.storybook/main.js` file. [Learn more.](https://storybook.js.org/docs/react/addons/install-addons/)
 
