@@ -7,7 +7,7 @@ import type { LoadedPlugin, Props } from "@docusaurus/types";
 import { logger } from "@storybook/node-logger";
 
 const ruleMatches = (rule: RuleSetRule, ...inputs: string[]) =>
-  inputs.some((input) => (rule.test as RegExp).test(input));
+  inputs.some((input) => "test" in rule && (rule.test as RegExp).test(input));
 
 let docusaurusData: Props;
 
