@@ -3304,7 +3304,7 @@
     npmlog "^5.0.1"
     pretty-hrtime "^1.0.3"
 
-"@storybook/node-logger@7.0.0-beta.54":
+"@storybook/node-logger@7.0.0-beta.54", "@storybook/node-logger@^7.0.0-beta.54":
   version "7.0.0-beta.54"
   resolved "https://registry.yarnpkg.com/@storybook/node-logger/-/node-logger-7.0.0-beta.54.tgz#8680b661c991ec2e8a468c4005c11fa2ad35dd24"
   integrity sha512-wh2DrS24MwNYGW79SqyQugLsKlxh3FNKVmppQc3NgQiFzx2DStE9Wa/Ct+4iOmYzXV7gHgyxN1HZ5+muOKVm7Q==

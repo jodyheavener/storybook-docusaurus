@@ -7,6 +7,6 @@ export default {
   component: ColorModeToggle,
 } as Meta<typeof ColorModeToggle>;
 
-// type Story = StoryObj<typeof ColorModeToggle>;
+type Story = StoryObj<typeof ColorModeToggle>;
 
-// export const Default: Story = {};
+export const Default: Story = {};

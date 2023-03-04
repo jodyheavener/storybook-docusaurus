@@ -5,13 +5,15 @@ module.exports = {
   "addons": [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "storybook-addon-docusaurus"
+    "@storybook/addon-interactions"
   ],
   "framework": {
-    "name": "@storybook/react-webpack5",
+    "name": "storybook-framework-docusaurus",
     "options": {
-      "fastRefresh": true
+      "fastRefresh": true,
+      "ignorePlugins": [
+        "docusaurus-mdx-fallback-plugin"
+      ]
     },
   },
   "docs": {

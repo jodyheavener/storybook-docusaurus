@@ -1,0 +1,67 @@
+{
+  "name": "storybook-framework-docusaurus",
+  "version": "0.1.0",
+  "description": "Storybook framework to aid in developing with Docusaurus",
+  "keywords": [
+    "storybook",
+    "docusaurus"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jodyheavener/storybook-addon-docusaurus"
+  },
+  "license": "MIT",
+  "author": "Jody Heavener <j.heavener@gmail.com>",
+  "exports": {
+    ".": {
+      "node": "./dist/index.cjs",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    },
+    "./preset": {
+      "require": "./dist/preset.cjs",
+      "import": "./dist/preset.mjs"
+    },
+    "./preview": {
+      "require": "./dist/preview.cjs",
+      "import": "./dist/preview.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist/**/*",
+    "*.js",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "build": "node -r esbuild-register bundle.ts --build",
+    "watch": "node -r esbuild-register bundle.ts --watch",
+    "prepack": "cp ../LICENSE LICENSE"
+  },
+  "dependencies": {
+    "@storybook/node-logger": "^7.0.0-beta.54",
+    "@storybook/react-webpack5": "^7.0.0-beta.54"
+  },
+  "devDependencies": {
+    "@docusaurus/core": "^2.3.1",
+    "@docusaurus/types": "^2.3.1",
+    "@storybook/react": "^6.5.16",
+    "esbuild": "^0.17.10",
+    "esbuild-register": "^3.4.2",
+    "react-helmet-async": "^1.3.0",
+    "react-router-dom": "^5.3.3",
+    "rimraf": "^4.1.2",
+    "webpack": "^5.73.0"
+  },
+  "peerDependencies": {
+    "@docusaurus/core": "^2.3.1",
+    "react-helmet-async": "^1.3.0",
+    "react-router-dom": "^5.3.3"
+  },
+  "storybook": {
+    "displayName": "Docusaurus",
+    "icon": "https://raw.githubusercontent.com/facebook/docusaurus/main/website/static/img/docusaurus.png"
+  }
+}
