@@ -51,7 +51,7 @@ const run = async () => {
     console.log("Watching for changes...");
     await Promise.all([esm.watch(), cjs.watch()]);
   } else {
-    console.log("Building...");
+    console.log(`Building ${packageDir}...`);
     await Promise.all([esm.rebuild(), cjs.rebuild()]);
 
     await esm.dispose();

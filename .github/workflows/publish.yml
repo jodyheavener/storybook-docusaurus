@@ -1,9 +1,12 @@
-name: Publish Package to npmjs
-on:  
+name: Publish Packages to npmjs
+on:
   push:
-    tags:
-      - '*'
-    
+    branches:
+      - main
+    paths:
+      - "addon/**/*"
+      - "framework/**/*"
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -12,12 +15,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
       - name: Setup and publish package
-        working-directory: ./addon
         run: |
           yarn install --frozen-lockfile
           yarn build
-          yarn publish --non-interactive
+          yarn lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
