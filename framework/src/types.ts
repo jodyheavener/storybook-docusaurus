@@ -9,7 +9,8 @@ import type {
 type FrameworkName = "storybook-framework-docusaurus";
 
 export type FrameworkOptions = ReactFrameworkOptions & {
-  ignorePlugins: string[];
+  ignoreWebpackConfigs: string[];
+  ignoreClientModules: string[];
 };
 
 type StorybookConfigFramework = {

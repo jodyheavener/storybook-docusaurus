@@ -1,13 +1,10 @@
 import type { Configuration, RuleSetRule } from "webpack";
-import { load } from "@docusaurus/core/lib/server";
 import createClientConfig from "@docusaurus/core/lib/webpack/client";
 import { applyConfigureWebpack } from "@docusaurus/core/lib/webpack/utils";
 import { loadClientModules } from "@docusaurus/core/lib/server/clientModules";
+import { load } from "@docusaurus/core/lib/server";
 import type { LoadedPlugin, Props } from "@docusaurus/types";
 import { logger } from "@storybook/node-logger";
-
-const ruleMatches = (rule: RuleSetRule, ...inputs: string[]) =>
-  inputs.some((input) => "test" in rule && (rule.test as RegExp).test(input));
 
 let docusaurusData: Props;
 
@@ -21,22 +18,35 @@ const loadDocusaurus = async () => {
   return docusaurusData;
 };
 
+const ruleMatches = (rule: RuleSetRule, ...inputs: string[]) =>
+  inputs.some((input) => "test" in rule && (rule.test as RegExp).test(input));
+
+const hasPlugin = (plugins: LoadedPlugin[], name: string) =>
+  plugins.map((plugin) => plugin.name).includes(name);
+
+const log = (message: string) => logger.info(`Docusaurus: ${message}`);
+
 const config = async (entry: string[] = []) => {
   const { plugins } = await loadDocusaurus();
 
-  const clientModules = loadClientModules(plugins);
-  logger.info(
-    `Adding ${clientModules.length} Docusaurus client modules to preview frame`
+  const clientModulePlugins = plugins.filter(
+    (plugin) => "getClientModules" in plugin
   );
+  if (clientModulePlugins.length > 0) {
+    log(
+      `adding client modules from the following plugins: ${clientModulePlugins
+        .map((p) => p.name)
+        .join(", ")}`
+    );
+  }
+
+  const clientModules = loadClientModules(clientModulePlugins);
 
   return [...entry, ...clientModules];
 };
 
 const webpackFinal = async (config: Configuration): Promise<Configuration> => {
   const props = await loadDocusaurus();
-
-  const hasPlugin = (name: string) =>
-    props.plugins.map((plugin) => plugin.name).includes(name);
 
   // Load up the Docusaurus client Webpack config,
   // so we can extract its aliases and rules
@@ -50,7 +60,7 @@ const webpackFinal = async (config: Configuration): Promise<Configuration> => {
   const rules = (config.module!.rules as RuleSetRule[])
     .map((rule) => {
       if (ruleMatches(rule, ".svg")) {
-        logger.info("Preferring Docusaurus SVG loader over Storybook");
+        log("preferring Docusaurus SVG loader over Storybook");
         return {
           ...rule,
           exclude: /\.svg$/,
@@ -58,12 +68,10 @@ const webpackFinal = async (config: Configuration): Promise<Configuration> => {
       }
 
       if (
-        hasPlugin("docusaurus-plugin-sass") &&
+        hasPlugin(props.plugins, "docusaurus-plugin-sass") &&
         ruleMatches(rule, ".module.scss")
       ) {
-        logger.info(
-          "Preferring docusaurus-plugin-sass over Storybook SASS loader"
-        );
+        log("preferring docusaurus-plugin-sass over Storybook SASS loader");
         return null;
       }
 
@@ -111,8 +119,8 @@ const webpackFinal = async (config: Configuration): Promise<Configuration> => {
     });
 
   if (appliedWebpackConfigs.length > 0) {
-    logger.info(
-      `Applying Webpack configs from the following Docusaurus plugins: ${appliedWebpackConfigs.join(
+    log(
+      `applying Webpack configs from the following Docusaurus plugins: ${appliedWebpackConfigs.join(
         ", "
       )}`
     );

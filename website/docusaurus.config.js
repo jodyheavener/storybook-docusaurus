@@ -1,3 +1,5 @@
+const { resolve } = require("path");
+
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
@@ -31,6 +33,18 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
+
+  plugins: [
+    () => ({
+      name: "ignored-custom-plugin",
+      getClientModules() {
+        return [resolve("./static/ignored-plugin.js")];
+      },
+      configureWebpack() {
+        throw new Error("Should not have included this plugin's Webpack config.");
+      }
+    }),
+  ],
 
   presets: [
     [

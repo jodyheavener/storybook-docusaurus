@@ -11,12 +11,16 @@ module.exports = {
     "name": "storybook-framework-docusaurus",
     "options": {
       "fastRefresh": true,
-      "ignorePlugins": [
-        "docusaurus-mdx-fallback-plugin"
+      "ignoreClientModules": [
+        "ignored-custom-plugin"
+      ],
+      "ignoreWebpackConfigs": [
+        "ignored-custom-plugin"
       ]
     },
   },
   "docs": {
     "autodocs": false
-  }
+  },
+  "staticDirs": ['../static'],
 }

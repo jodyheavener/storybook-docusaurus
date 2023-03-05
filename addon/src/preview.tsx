@@ -7,6 +7,13 @@ import { RouteContextProvider } from "@docusaurus/core/lib/client/routeContext";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
+if (window?.docusaurus == null) {
+  window.docusaurus = {
+    prefetch: () => false,
+    preload: () => false,
+  };
+}
+
 export const decorators: DecoratorFn[] = [
   (Story) => (
     <HelmetProvider>

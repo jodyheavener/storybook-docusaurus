@@ -6,4 +6,4 @@ sidebar_label: Intro
 
 # Hello!
 
-This is a test site for the `storybook-addon-docusaurus` package.
+This is a test site for the `storybook-framework-docusaurus` package.

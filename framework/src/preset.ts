@@ -1,8 +1,8 @@
 import type { Configuration, RuleSetRule } from "webpack";
-import { load } from "@docusaurus/core/lib/server";
 import createClientConfig from "@docusaurus/core/lib/webpack/client";
 import { applyConfigureWebpack } from "@docusaurus/core/lib/webpack/utils";
 import { loadClientModules } from "@docusaurus/core/lib/server/clientModules";
+import { load } from "@docusaurus/core/lib/server";
 import type { LoadedPlugin, Props } from "@docusaurus/types";
 import { logger } from "@storybook/node-logger";
 import { type StorybookConfig, type FrameworkOptions } from "./types";
@@ -14,23 +14,6 @@ export {
   core,
   webpack,
 } from "@storybook/react-webpack5/preset";
-
-const ruleMatches = (rule: RuleSetRule, ...inputs: string[]) =>
-  inputs.some((input) => "test" in rule && (rule.test as RegExp).test(input));
-
-const filterPlugins = (
-  plugins: LoadedPlugin[],
-  ignoredPlugins: string[]
-): LoadedPlugin[] => plugins.filter((p) => !ignoredPlugins.includes(p.name));
-
-const getFrameworkOption = <TName extends keyof FrameworkOptions>(
-  frameworkConfig: StorybookConfig["framework"],
-  optionName: TName,
-  fallback: FrameworkOptions[TName]
-): FrameworkOptions[TName] =>
-  (typeof frameworkConfig === "object" &&
-    frameworkConfig.options[optionName]) ||
-  fallback;
 
 let docusaurusData: Props;
 
@@ -44,6 +27,28 @@ const loadDocusaurus = async () => {
   return docusaurusData;
 };
 
+const ruleMatches = (rule: RuleSetRule, ...inputs: string[]) =>
+  inputs.some((input) => "test" in rule && (rule.test as RegExp).test(input));
+
+const filterPlugins = (
+  plugins: LoadedPlugin[],
+  ignoredPlugins: string[]
+): LoadedPlugin[] => plugins.filter((p) => !ignoredPlugins.includes(p.name));
+
+const hasPlugin = (plugins: LoadedPlugin[], name: string) =>
+  plugins.map((plugin) => plugin.name).includes(name);
+
+const log = (message: string) => logger.info(`Docusaurus: ${message}`);
+
+const getFrameworkOption = <TName extends keyof FrameworkOptions>(
+  frameworkConfig: StorybookConfig["framework"],
+  optionName: TName,
+  fallback: FrameworkOptions[TName]
+): FrameworkOptions[TName] =>
+  (typeof frameworkConfig === "object" &&
+    frameworkConfig.options[optionName]) ||
+  fallback;
+
 const previewAnnotations: NonNullable<StorybookConfig["previewAnnotations"]> =
   async (entry: string[] = [], options) => {
     const frameworkConfig = await options.presets.apply<
@@ -53,17 +58,21 @@ const previewAnnotations: NonNullable<StorybookConfig["previewAnnotations"]> =
     const props = await loadDocusaurus();
     const plugins = filterPlugins(
       props.plugins,
-      getFrameworkOption(frameworkConfig, "ignorePlugins", [])
+      getFrameworkOption(frameworkConfig, "ignoreClientModules", [])
     );
 
-    const clientModules = loadClientModules(plugins);
-    
-    if (clientModules.length > 0) {
-      logger.info(
-        `(Docusaurus) Adding ${clientModules.length} client modules to preview frame`
+    const clientModulePlugins = plugins.filter(
+      (plugin) => "getClientModules" in plugin
+    );
+    if (clientModulePlugins.length > 0) {
+      log(
+        `adding client modules from the following plugins: ${clientModulePlugins
+          .map((p) => p.name)
+          .join(", ")}`
       );
     }
 
+    const clientModules = loadClientModules(clientModulePlugins);
     const preview = require.resolve(join(__dirname, "preview"));
 
     return [...entry, ...clientModules, preview];
@@ -80,11 +89,8 @@ const webpackFinal: NonNullable<StorybookConfig["webpackFinal"]> = async (
   const props = await loadDocusaurus();
   const plugins = filterPlugins(
     props.plugins,
-    getFrameworkOption(frameworkConfig, "ignorePlugins", [])
+    getFrameworkOption(frameworkConfig, "ignoreWebpackConfigs", [])
   );
-
-  const hasPlugin = (name: string) =>
-    plugins.map((plugin) => plugin.name).includes(name);
 
   // Load up the Docusaurus client Webpack config,
   // so we can extract its aliases and rules
@@ -98,7 +104,7 @@ const webpackFinal: NonNullable<StorybookConfig["webpackFinal"]> = async (
   const rules = (baseConfig.module!.rules as RuleSetRule[])
     .map((rule) => {
       if (ruleMatches(rule, ".svg")) {
-        logger.info("(Docusaurus) Preferring SVG loader over Storybook");
+        log("preferring SVG loader over Storybook");
         return {
           ...rule,
           exclude: /\.svg$/,
@@ -106,12 +112,10 @@ const webpackFinal: NonNullable<StorybookConfig["webpackFinal"]> = async (
       }
 
       if (
-        hasPlugin("docusaurus-plugin-sass") &&
+        hasPlugin(plugins, "docusaurus-plugin-sass") &&
         ruleMatches(rule, ".module.scss")
       ) {
-        logger.info(
-          "(Docusaurus) Preferring docusaurus-plugin-sass over Storybook SASS loader"
-        );
+        log("preferring docusaurus-plugin-sass over Storybook SASS loader");
         return null;
       }
 
@@ -159,8 +163,8 @@ const webpackFinal: NonNullable<StorybookConfig["webpackFinal"]> = async (
     });
 
   if (appliedWebpackConfigs.length > 0) {
-    logger.info(
-      `(Docusaurus) Applying Webpack configs from the following plugins: ${appliedWebpackConfigs.join(
+    log(
+      `applying Webpack configs from the following plugins: ${appliedWebpackConfigs.join(
         ", "
       )}`
     );

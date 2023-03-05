@@ -5,5 +5,13 @@
     "addon",
     "framework",
     "website"
-  ]
+  ],
+  "scripts": {
+    "compile": "node -r esbuild-register ./compile.ts"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.11",
+    "esbuild-register": "^3.4.2",
+    "rimraf": "^4.3.0"
+  }
 }
