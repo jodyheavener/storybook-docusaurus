@@ -1,0 +1,30 @@
+name: Storybook
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install and Build Packages
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+
+      - name: Build Storybook
+        working-directory: ./website
+        run: yarn build-storybook
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: website/storybook-static
