@@ -1,6 +1,6 @@
 {
   "name": "storybook-addon-docusaurus",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Storybook addon to aid in developing with Docusaurus",
   "keywords": [
     "storybook-addons",
