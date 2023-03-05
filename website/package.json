@@ -34,7 +34,7 @@
     "@storybook/react-webpack5": "^7.0.0-beta.54",
     "@storybook/react": "^7.0.0-beta.54",
     "@storybook/testing-library": "^0.0.14-next.1",
-    "babel-loader": "^8.3.0",
+    "babel-loader": "^9.1.2",
     "storybook": "next"
   },
   "browserslist": {
